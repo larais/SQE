@@ -17,20 +17,20 @@ namespace SQE.CSharp.Test
 
 
                 AntlrInputStream inputStream = new AntlrInputStream(input);
-                //var lexer = new SearchLexer(inputStream);
-               // CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
-                //var parser = new SearchParser(commonTokenStream);
+                var lexer = new SQELexer(inputStream);
+                CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
+                var parser = new SQEParser(commonTokenStream);
 
-                //parser.RemoveErrorListeners();
-                //parser.AddErrorListener(new ErrorListener());
+                parser.RemoveErrorListeners();
+                parser.AddErrorListener(new ErrorListener());
 
                 try
                 {
-                    //SearchParser.ExpressionContext expressionContext = parser.expression();
-                    //Console.WriteLine("Tree expression context: " + expressionContext.ToStringTree());
+                    SQEParser.ExpressionContext expressionContext = parser.expression();
+                    Console.WriteLine("Tree expression context: " + expressionContext.ToStringTree());
 
-                    //var visitor = new Visitor();
-                    //Console.WriteLine("Visiting tree: " + visitor.Visit(expressionContext) + Environment.NewLine);
+                    var visitor = new MSSQLVisitor();
+                    Console.WriteLine("Visiting tree: " + visitor.Visit(expressionContext) + Environment.NewLine);
                 }
                 catch (Exception e)
                 {
