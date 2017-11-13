@@ -22,7 +22,7 @@ namespace SQE.CSharp.Test
                 var parser = new SQEParser(commonTokenStream);
 
                 parser.RemoveErrorListeners();
-                parser.AddErrorListener(new ErrorListener());
+                parser.AddErrorListener(new PrimitiveErrorListener());
 
                 try
                 {
