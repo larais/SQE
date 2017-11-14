@@ -1,3 +1,3 @@
 # Search Query Engine
 
-![BuildBadge](https://davidmoraisferreira.visualstudio.com/_apis/public/build/definitions/b1d5aeaa-333f-42cc-94ac-956ba700222f/5/badge)
+[![Build status](https://ci.appveyor.com/api/projects/status/yi21naawnk2bralb/branch/develop?svg=true)](https://ci.appveyor.com/project/DavidMoraisFerreira/sqe/branch/develop)
