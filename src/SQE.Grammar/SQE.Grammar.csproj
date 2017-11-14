@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="powershell.exe $(ProjectDir)build.ps1" />
+    <Exec Command="powershell.exe -executionpolicy bypass $(ProjectDir)build.ps1" />
   </Target>
 
   <ItemGroup>
