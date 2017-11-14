@@ -1,3 +1,3 @@
 # Search Query Engine
 
-[![Build status](https://ci.appveyor.com/api/projects/status/yi21naawnk2bralb/branch/develop?svg=true)](https://ci.appveyor.com/project/DavidMoraisFerreira/sqe/branch/develop)
+[![Build status](https://ci.appveyor.com/api/projects/status/08nfnb02rvo9syx7/branch/develop?svg=true)](https://ci.appveyor.com/project/larais/sqe/branch/develop)
