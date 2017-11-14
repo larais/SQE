@@ -38,8 +38,8 @@ public partial class SQEParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		T__0=1, T__1=2, AND=3, OR=4, PROPERTY=5, OPERATOR=6, ESCAPEDSTRING=7, 
-		NUMBER=8, WHITESPACE=9, NEWLINE=10;
+		T__0=1, T__1=2, AND=3, OR=4, OPERATOR=5, NUMBER=6, PROPERTY=7, ESCAPEDSTRING=8, 
+		WHITESPACE=9, NEWLINE=10;
 	public const int
 		RULE_expression = 0, RULE_mainExpr = 1;
 	public static readonly string[] ruleNames = {
@@ -50,8 +50,8 @@ public partial class SQEParser : Parser {
 		null, "'('", "')'", "'and'", "'or'", null, null, null, null, "' '"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, null, null, "AND", "OR", "PROPERTY", "OPERATOR", "ESCAPEDSTRING", 
-		"NUMBER", "WHITESPACE", "NEWLINE"
+		null, null, null, "AND", "OR", "OPERATOR", "NUMBER", "PROPERTY", "ESCAPEDSTRING", 
+		"WHITESPACE", "NEWLINE"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -332,10 +332,10 @@ public partial class SQEParser : Parser {
 		'\b', '\x3', '\x3', '\x2', '\x2', '\x2', '\t', '\n', '\b', '\x3', '\x1', 
 		'\x2', '\n', '\v', '\a', '\x3', '\x2', '\x2', '\v', '\f', '\x5', '\x4', 
 		'\x3', '\x2', '\f', '\r', '\a', '\x4', '\x2', '\x2', '\r', '\x15', '\x3', 
-		'\x2', '\x2', '\x2', '\xE', '\xF', '\a', '\a', '\x2', '\x2', '\xF', '\x10', 
-		'\a', '\b', '\x2', '\x2', '\x10', '\x15', '\a', '\n', '\x2', '\x2', '\x11', 
-		'\x12', '\a', '\a', '\x2', '\x2', '\x12', '\x13', '\a', '\b', '\x2', '\x2', 
-		'\x13', '\x15', '\a', '\t', '\x2', '\x2', '\x14', '\t', '\x3', '\x2', 
+		'\x2', '\x2', '\x2', '\xE', '\xF', '\a', '\t', '\x2', '\x2', '\xF', '\x10', 
+		'\a', '\a', '\x2', '\x2', '\x10', '\x15', '\a', '\b', '\x2', '\x2', '\x11', 
+		'\x12', '\a', '\t', '\x2', '\x2', '\x12', '\x13', '\a', '\a', '\x2', '\x2', 
+		'\x13', '\x15', '\a', '\n', '\x2', '\x2', '\x14', '\t', '\x3', '\x2', 
 		'\x2', '\x2', '\x14', '\xE', '\x3', '\x2', '\x2', '\x2', '\x14', '\x11', 
 		'\x3', '\x2', '\x2', '\x2', '\x15', '\x1E', '\x3', '\x2', '\x2', '\x2', 
 		'\x16', '\x17', '\f', '\x6', '\x2', '\x2', '\x17', '\x18', '\a', '\x5', 

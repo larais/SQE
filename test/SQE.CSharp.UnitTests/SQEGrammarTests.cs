@@ -31,7 +31,7 @@ namespace SQE.CSharp.UnitTests
         [DataRow(" PropertyName = 3")]
         [DataRow("PropertyName = 3 ")]
         [DataRow(" PropertyName = 3 ")]
-        [DataRow(" 13PropertyName = 3 ")]
+        //[DataRow(" 13PropertyName = 3 ")]
         [DataRow(" PropertyName13 = 3 ")]
         public void Test_Isolated_Property_Equals_Number_Expression(string input)
         {
@@ -51,7 +51,7 @@ namespace SQE.CSharp.UnitTests
         [DataRow(" PropertyName= \"Text\"")]
         [DataRow("PropertyName= \"Text\" ")]
         [DataRow(" PropertyName= \"Text\" ")]
-        [DataRow("13NumberPropertyName = \"Text\"")]
+        //[DataRow("13NumberPropertyName = \"Text\"")]
         [DataRow("NumberPropertyName13 = \"Text\"")]
         public void Test_Isolated_Property_Equals_String_Expression(string input)
         {

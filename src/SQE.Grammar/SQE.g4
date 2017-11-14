@@ -12,25 +12,25 @@ mainExpr          : '(' mainExpr ')'                    #parenthesisExp
                     | PROPERTY OPERATOR ESCAPEDSTRING   #compareStringExp
                     ;
 
-fragment LETTER     : [a-zA-Z] ;
-fragment DIGIT      : [0-9] ;
-
 AND                 : 'and' ;
 OR                  : 'or' ;
+OPERATOR            : (EQUALS|NOTEQUALS|GREATER|LESS);
+
+NUMBER              : (DIGIT)+ ;
+PROPERTY         	: LETTER (LETTER | DIGIT)* ;
+
+fragment LETTER     : [a-zA-Z] ;
+fragment DIGIT      : [0-9] ;
+fragment LETTERNUM  : [a-zA-Z0-9] ;
 
 fragment EQUALS              : '=' ;
 fragment NOTEQUALS           : '!=' ;
 fragment GREATER             : '>' ;
 fragment LESS                : '<' ;
 
-PROPERTY         	: LETTER+ ;
-OPERATOR            : (EQUALS|NOTEQUALS|GREATER|LESS);
-
 ESCAPEDSTRING       : '"' ('\\"'|.)*? '"'
                     | '\'' ('\\\''|.)*? '\''
                     ;
-
-NUMBER              : DIGIT+ ('.' DIGIT+)? ;
 
 WHITESPACE          : ' ' -> skip;
 NEWLINE             : '\r'? '\n' -> skip;
