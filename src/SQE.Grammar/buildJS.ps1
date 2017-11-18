@@ -1,0 +1,1 @@
+﻿./build.ps1 -Language "JavaScript" -Output "../../test/SQE.JS.Test/wwwroot"

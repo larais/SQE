@@ -1,6 +1,7 @@
 param(
 	[String]$AntlrJar="./antlr-4.7-complete.jar",
 	[String]$Grammar="SQE.g4",
+	[String]$Language="CSharp",
 	[String]$Package="SQE",
 	[String]$Output="../SQE.CSharp/Generated"
 )
@@ -14,10 +15,10 @@ if (-Not (Test-Path($AntlrJar)))
 
 try
 {
-	Write-Output "Building Antlr files and generating C# classes."
-	java -jar $AntlrJar -Dlanguage=CSharp $Grammar -visitor -no-listener -package $Package -o $Output
+	Write-Output "Building Antlr files and generating $Language classes."
+	java -jar $AntlrJar -Dlanguage="$Language" $Grammar -visitor -no-listener -package $Package -o $Output
 }
 catch {
-	Write-Error "Could not generate the C# files, please verify that you have java installed on your machine."
+	Write-Error "Could not generate the $Language files, please verify that you have java installed on your machine."
 }
 Write-Output "End of build.ps1"
