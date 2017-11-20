@@ -1,9 +1,37 @@
 ﻿using Antlr4.Runtime.Misc;
+using Antlr4.Runtime.Tree;
 
 namespace SQE.CSharp
 {
-    public class MSSQLVisitor : SQEBaseVisitor<string>
+    public class testGen : IQueryGenerator<System.String>
     {
+        public string GetResult()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public string ToCompareNumberExp(ITerminalNode prop, ITerminalNode op, ITerminalNode number)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    public interface IQueryGenerator<T>
+    {
+        string ToCompareNumberExp(ITerminalNode prop, ITerminalNode op, ITerminalNode number);
+
+        T GetResult();
+    }
+
+    public class AbstractTreeVisitor<TReturn> : SQEBaseVisitor<string> where TReturn : class
+    {
+        private IQueryGenerator<TReturn> generator;
+
+        public AbstractTreeVisitor(IQueryGenerator<TReturn> generator)
+        {
+            this.generator = generator;
+        }
+
         public override string VisitExpression([NotNull] SQEParser.ExpressionContext context)
         {
             var left = Visit(context.mainExpr());
