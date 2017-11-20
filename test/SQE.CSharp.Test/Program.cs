@@ -21,7 +21,7 @@ namespace SQE.CSharp.Test
                     {
                         connection.Open();
 
-                        var mysqlQueryGen = new testGen();
+                        var mysqlQueryGen = new MSSQLGenerator();
 
                         var cmd = GenerateCommand(mysqlQueryGen);
 

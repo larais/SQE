@@ -1,28 +1,7 @@
 ﻿using Antlr4.Runtime.Misc;
-using Antlr4.Runtime.Tree;
 
 namespace SQE.CSharp
 {
-    public class testGen : IQueryGenerator<System.String>
-    {
-        public string GetResult()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public string ToCompareNumberExp(ITerminalNode prop, ITerminalNode op, ITerminalNode number)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-
-    public interface IQueryGenerator<T>
-    {
-        string ToCompareNumberExp(ITerminalNode prop, ITerminalNode op, ITerminalNode number);
-
-        T GetResult();
-    }
-
     public class AbstractTreeVisitor<TReturn> : SQEBaseVisitor<string> where TReturn : class
     {
         private IQueryGenerator<TReturn> generator;
