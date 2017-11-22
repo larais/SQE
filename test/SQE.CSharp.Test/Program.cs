@@ -1,5 +1,7 @@
 ﻿using Antlr4.Runtime;
+using SQE.CSharp.SQLGenerators;
 using System;
+using System.Data.SqlClient;
 
 namespace SQE.CSharp.Test
 {
@@ -15,27 +17,31 @@ namespace SQE.CSharp.Test
                 if (input == "exit")
                     break;
 
-                if (IsValid(input))
-                {
-                    using (var conn = new SqlConnection())
-                    {
-                        connection.Open();
+                var mssqlQueryGenerator = new MSSQLGenerator();
 
-                        var mysqlQueryGen = new MSSQLGenerator();
+                var cmd = GenerateCommand(mssqlQueryGenerator, input);
 
-                        var cmd = GenerateCommand(mysqlQueryGen);
+                Console.WriteLine(cmd);
 
-                        cmd.ExecuteQueryAsync();
-                    }
-                }
+                //if (IsValid(input))
+                //{
+                //    using (var connection = new SqlConnection(""))
+                //    {
+                //        connection.Open();
 
+                //        var mssqlQueryGenerator = new MSSQLGenerator();
 
-                DoIt(input);
+                //        var cmd = GenerateCommand(mssqlQueryGenerator, input);
+
+                //        cmd.ExecuteNonQueryAsync();
+                //    }
+                //}
             }
         }
 
-        private static TReturn GenerateCommand<TReturn>(IQueryGenerator<TReturn> qg) where TReturn : class
+        private static TReturn GenerateCommand<TReturn>(IQueryGenerator<TReturn> qg, string input) where TReturn : class
         {
+            //TODO: Move Lexing & Parsing to earlier stage.
 
             AntlrInputStream inputStream = new AntlrInputStream(input);
             var lexer = new SQELexer(inputStream);
@@ -49,43 +55,14 @@ namespace SQE.CSharp.Test
             Console.WriteLine("Tree expression context: " + expressionContext.ToStringTree());
 
             var visitor = new AbstractTreeVisitor<TReturn>(qg);
-            visitor.Visit(expressionContext);
+            return visitor.Visit(expressionContext) as TReturn;
 
-            return qg.GetResult();
+           // return qg.GetResult();
         }
 
         private static bool IsValid(string intpusd)
         {
-            return false;
-        }
-
-        private static void DoIt(string input)
-        {
-            AntlrInputStream inputStream = new AntlrInputStream(input);
-            var lexer = new SQELexer(inputStream);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
-            var parser = new SQEParser(commonTokenStream);
-
-            parser.RemoveErrorListeners();
-            parser.AddErrorListener(new PrimitiveErrorListener());
-
-            try
-            {
-                SQEParser.ExpressionContext expressionContext = parser.expression();
-                Console.WriteLine("Tree expression context: " + expressionContext.ToStringTree());
-
-                var visitor = new AbstractTreeVisitor();
-                Console.WriteLine("Visiting tree: " + visitor.Visit(expressionContext) + Environment.NewLine);
-
-
-
-
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            throw new NotImplementedException();
         }
     }
 }

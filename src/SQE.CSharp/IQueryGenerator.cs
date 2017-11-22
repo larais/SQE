@@ -4,9 +4,17 @@ namespace SQE.CSharp
 {
     public interface IQueryGenerator<T>
     {
-        string ToCompareNumberExp(ITerminalNode prop, ITerminalNode op, ITerminalNode number);
+        string VisitMainExp(T left);
 
-        string ToCompareStringExp(ITerminalNode prop, ITerminalNode op, ITerminalNode number);
+        string NestedExp(T content);
+
+        string CombineAndExp(T left, T right);
+
+        string CombineOrExp(T left, T right);
+
+        string ToCompareNumberExp(ITerminalNode property, ITerminalNode op, ITerminalNode number);
+
+        string ToCompareStringExp(ITerminalNode property, ITerminalNode op, ITerminalNode number);
 
         T GetResult();
     }

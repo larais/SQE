@@ -14,7 +14,8 @@ namespace SQE.CSharp
         public override string VisitExpression([NotNull] SQEParser.ExpressionContext context)
         {
             var left = Visit(context.mainExpr());
-            return $"({left})";
+
+            return generator.VisitMainExp(left as TReturn);
         }
 
         public override string VisitAndExp([NotNull] SQEParser.AndExpContext context)
@@ -22,7 +23,7 @@ namespace SQE.CSharp
             var left = Visit(context.mainExpr(0));
             var right = Visit(context.mainExpr(1));
 
-            return $"({left}) AND ({right})";
+            return generator.CombineAndExp(left as TReturn, right as TReturn);
         }
 
         public override string VisitOrExp([NotNull] SQEParser.OrExpContext context)
@@ -30,13 +31,14 @@ namespace SQE.CSharp
             var left = Visit(context.mainExpr(0));
             var right = Visit(context.mainExpr(1));
 
-            return $"({left}) OR ({right})";
+            return generator.CombineOrExp(left as TReturn, right as TReturn);
         }
 
         public override string VisitParenthesisExp([NotNull] SQEParser.ParenthesisExpContext context)
         {
             var content = Visit(context.mainExpr());
-            return $"({content})";
+            
+            return generator.NestedExp(content as TReturn);
         }
 
         public override string VisitCompareNumberExp([NotNull] SQEParser.CompareNumberExpContext context)
@@ -45,7 +47,7 @@ namespace SQE.CSharp
             var op = context.OPERATOR();
             var number = context.NUMBER();
 
-            return $"{property} {op} {number}";
+            return generator.ToCompareNumberExp(property, op, number);
         }
 
         public override string VisitCompareStringExp([NotNull] SQEParser.CompareStringExpContext context)
@@ -54,7 +56,7 @@ namespace SQE.CSharp
             var op = context.OPERATOR();
             var number = context.ESCAPEDSTRING();
 
-            return $"{property} {op} {number}";
+            return generator.ToCompareStringExp(property, op, number);
         }
     }
 }
