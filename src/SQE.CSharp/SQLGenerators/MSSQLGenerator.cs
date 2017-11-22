@@ -1,20 +1,50 @@
-﻿using System;
-using Antlr4.Runtime.Tree;
+﻿using Antlr4.Runtime.Tree;
 using System.Data.SqlClient;
+using System.Collections.Generic;
+using System.Data;
 
 namespace SQE.CSharp.SQLGenerators
 {
-    public class MSSQLGenerator : IQueryGenerator<SqlCommand>
+    public class MSSQLGenerator : IQueryGenerator<string, SqlCommand>
     {
-        public SqlCommand Command { get; private set; }
+        public SqlCommand Command { get; private set; } = new SqlCommand();
 
-        public String VisitMainExp(string mainExpression)
+        private List<SqlParameter> PropertiesContainer = new List<SqlParameter>();
+        private int PropertyCounter { get; set; } = 0;
+
+        private int CreateSqlParameter(ITerminalNode item, SqlDbType type = SqlDbType.VarChar)
         {
-            Command.CommandText = "SELECT * FROM TABLENAME WHERE (@FilterExpr)";
-            //return $"({mainExpression})";
+            PropertyCounter++;
+            var p = new SqlParameter($"@{PropertyCounter}", type);
+            if(type == SqlDbType.VarChar)
+            {
+                var trimmedString = item.ToString().Trim('"');
+                p.Value = trimmedString;
+                p.Size = trimmedString.Length;
+            }
+            else
+            {
+                //Assert Int
+                p.Value = int.Parse(item.ToString());
+            }
+
+            PropertiesContainer.Add(p);
+
+            return PropertyCounter;
         }
 
-        public String NestedExp(string content)
+        public string VisitMainExp(string mainExpression)
+        {
+            Setup();
+
+            var query = $"SELECT * FROM serilog.Logs WHERE {mainExpression};";
+            Command.CommandText = query;
+            Command.Parameters.AddRange(PropertiesContainer.ToArray());
+
+            return query;
+        }
+
+        public string NestedExp(string content)
         {
             return $"({content})";
         }
@@ -24,25 +54,34 @@ namespace SQE.CSharp.SQLGenerators
             return $"({left}) AND ({right})";  
         }
 
-        public String CombineOrExp(string left, string right)
+        public string CombineOrExp(string left, string right)
         {
             return $"({left}) OR ({right})";
         }
         
-        public String ToCompareNumberExp(ITerminalNode property, ITerminalNode op, ITerminalNode number)
+        public string ToCompareNumberExp(ITerminalNode property, ITerminalNode op, ITerminalNode number)
         {
-            return $"{property} {op} {number}";
+            var propParam = CreateSqlParameter(property);
+            var valueParam = CreateSqlParameter(number, SqlDbType.Int);
+
+            return $"@{propParam} {op} @{valueParam}";
         }
 
-        public String ToCompareStringExp(ITerminalNode property, ITerminalNode op, ITerminalNode number)
+        public string ToCompareStringExp(ITerminalNode property, ITerminalNode op, ITerminalNode escapedString)
         {
-            return $"{property} {op} {number}";
+            var propParam = CreateSqlParameter(property);
+            var valueParam = CreateSqlParameter(escapedString);
+
+            return $"@{propParam} {op} @{valueParam}";
         }
 
         public SqlCommand GetResult()
-        
+        {
             return Command;
-            throw new NotImplementedException();
+        }
+
+        public void Setup()
+        {
         }
     }
 }

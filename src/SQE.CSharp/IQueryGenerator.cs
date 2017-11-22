@@ -2,20 +2,22 @@
 
 namespace SQE.CSharp
 {
-    public interface IQueryGenerator<T>
+    public interface IQueryGenerator<T, TResult>
     {
-        string VisitMainExp(T left);
+        void Setup();
 
-        string NestedExp(T content);
+        T VisitMainExp(T left);
 
-        string CombineAndExp(T left, T right);
+        T NestedExp(T content);
 
-        string CombineOrExp(T left, T right);
+        T CombineAndExp(T left, T right);
 
-        string ToCompareNumberExp(ITerminalNode property, ITerminalNode op, ITerminalNode number);
+        T CombineOrExp(T left, T right);
 
-        string ToCompareStringExp(ITerminalNode property, ITerminalNode op, ITerminalNode number);
+        T ToCompareNumberExp(ITerminalNode property, ITerminalNode op, ITerminalNode number);
 
-        T GetResult();
+        T ToCompareStringExp(ITerminalNode property, ITerminalNode op, ITerminalNode escapedString);
+
+        TResult GetResult();
     }
 }

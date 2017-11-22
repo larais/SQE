@@ -2,46 +2,48 @@
 
 namespace SQE.CSharp
 {
-    public class AbstractTreeVisitor<TReturn> : SQEBaseVisitor<string> where TReturn : class
+    public class AbstractTreeVisitor<TReturn, TResult> : SQEBaseVisitor<TReturn> where TReturn : class
     {
-        private IQueryGenerator<TReturn> generator;
+        private IQueryGenerator<TReturn, TResult> generator;
 
-        public AbstractTreeVisitor(IQueryGenerator<TReturn> generator)
+        public AbstractTreeVisitor(IQueryGenerator<TReturn, TResult> generator)
         {
             this.generator = generator;
         }
 
-        public override string VisitExpression([NotNull] SQEParser.ExpressionContext context)
+        public override TReturn VisitExpression([NotNull] SQEParser.ExpressionContext context)
         {
-            var left = Visit(context.mainExpr());
+            generator.Setup();
 
-            return generator.VisitMainExp(left as TReturn);
+            var mainExpression = Visit(context.mainExpr());
+            
+            return generator.VisitMainExp(mainExpression);
         }
 
-        public override string VisitAndExp([NotNull] SQEParser.AndExpContext context)
-        {
-            var left = Visit(context.mainExpr(0));
-            var right = Visit(context.mainExpr(1));
-
-            return generator.CombineAndExp(left as TReturn, right as TReturn);
-        }
-
-        public override string VisitOrExp([NotNull] SQEParser.OrExpContext context)
+        public override TReturn VisitAndExp([NotNull] SQEParser.AndExpContext context)
         {
             var left = Visit(context.mainExpr(0));
             var right = Visit(context.mainExpr(1));
 
-            return generator.CombineOrExp(left as TReturn, right as TReturn);
+            return generator.CombineAndExp(left, right);
         }
 
-        public override string VisitParenthesisExp([NotNull] SQEParser.ParenthesisExpContext context)
+        public override TReturn VisitOrExp([NotNull] SQEParser.OrExpContext context)
+        {
+            var left = Visit(context.mainExpr(0));
+            var right = Visit(context.mainExpr(1));
+
+            return generator.CombineOrExp(left, right);
+        }
+
+        public override TReturn VisitParenthesisExp([NotNull] SQEParser.ParenthesisExpContext context)
         {
             var content = Visit(context.mainExpr());
             
-            return generator.NestedExp(content as TReturn);
+            return generator.NestedExp(content);
         }
 
-        public override string VisitCompareNumberExp([NotNull] SQEParser.CompareNumberExpContext context)
+        public override TReturn VisitCompareNumberExp([NotNull] SQEParser.CompareNumberExpContext context)
         {
             var property = context.PROPERTY();
             var op = context.OPERATOR();
@@ -50,13 +52,13 @@ namespace SQE.CSharp
             return generator.ToCompareNumberExp(property, op, number);
         }
 
-        public override string VisitCompareStringExp([NotNull] SQEParser.CompareStringExpContext context)
+        public override TReturn VisitCompareStringExp([NotNull] SQEParser.CompareStringExpContext context)
         {
             var property = context.PROPERTY();
             var op = context.OPERATOR();
-            var number = context.ESCAPEDSTRING();
+            var escapedString = context.ESCAPEDSTRING();
 
-            return generator.ToCompareStringExp(property, op, number);
+            return generator.ToCompareStringExp(property, op, escapedString);
         }
     }
 }

@@ -17,32 +17,34 @@ namespace SQE.CSharp.Test
                 if (input == "exit")
                     break;
 
+                var expressionContext = ProcessInput(input);
+                Console.WriteLine("Tree expression context: " + expressionContext.ToStringTree());
+
                 var mssqlQueryGenerator = new MSSQLGenerator();
 
-                var cmd = GenerateCommand(mssqlQueryGenerator, input);
+                var sqlCommand = GenerateCommand(mssqlQueryGenerator, expressionContext);
 
-                Console.WriteLine(cmd);
+                if (IsValid(input))
+                {
+                    using (var connection = new SqlConnection(@""))
+                    {
+                        connection.Open();
 
-                //if (IsValid(input))
-                //{
-                //    using (var connection = new SqlConnection(""))
-                //    {
-                //        connection.Open();
+                        sqlCommand.Connection = connection;
+                        sqlCommand.Prepare();
+                        var reader = sqlCommand.ExecuteReader();
 
-                //        var mssqlQueryGenerator = new MSSQLGenerator();
-
-                //        var cmd = GenerateCommand(mssqlQueryGenerator, input);
-
-                //        cmd.ExecuteNonQueryAsync();
-                //    }
-                //}
+                        while (reader.Read())
+                        {
+                            Console.WriteLine($"RowID: {reader[0]}");
+                        }
+                    }
+                }
             }
         }
 
-        private static TReturn GenerateCommand<TReturn>(IQueryGenerator<TReturn> qg, string input) where TReturn : class
+        private static SQEParser.ExpressionContext ProcessInput(string input)
         {
-            //TODO: Move Lexing & Parsing to earlier stage.
-
             AntlrInputStream inputStream = new AntlrInputStream(input);
             var lexer = new SQELexer(inputStream);
             CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
@@ -50,18 +52,26 @@ namespace SQE.CSharp.Test
 
             parser.RemoveErrorListeners();
             parser.AddErrorListener(new PrimitiveErrorListener());
-            
+
             SQEParser.ExpressionContext expressionContext = parser.expression();
-            Console.WriteLine("Tree expression context: " + expressionContext.ToStringTree());
 
-            var visitor = new AbstractTreeVisitor<TReturn>(qg);
-            return visitor.Visit(expressionContext) as TReturn;
+            return expressionContext;
+        }
 
-           // return qg.GetResult();
+        private static TResult GenerateCommand<TReturn, TResult>(IQueryGenerator<TReturn, TResult> qg, SQEParser.ExpressionContext expressionContext) where TReturn : class
+        {
+            var visitor = new AbstractTreeVisitor<TReturn, TResult>(qg);
+            visitor.Visit(expressionContext);
+
+            return qg.GetResult();
         }
 
         private static bool IsValid(string intpusd)
         {
+            return true; //HACK:
+
+            // TODO: Call ProcessInput, verify no Exception is Thrown
+
             throw new NotImplementedException();
         }
     }
