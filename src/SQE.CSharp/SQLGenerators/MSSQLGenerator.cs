@@ -1,13 +1,19 @@
 ﻿using Antlr4.Runtime.Tree;
 using System.Data.SqlClient;
-using System.Collections.Generic;
 using System.Data;
+using System;
 
 namespace SQE.CSharp.SQLGenerators
 {
     public class MSSQLGenerator : IQueryGenerator<string, SqlCommand>
     {
         public SqlCommand Command { get; private set; } = new SqlCommand();
+
+        private void BuildXMLQueryString(ITerminalNode item)
+        {
+            // TODO: X.exist('//*[@key="SourceContext" and contains(.,"CSV")]') = 1
+            throw new NotImplementedException();
+        }
 
         private int CreateSqlParameter(ITerminalNode item, SqlDbType type = SqlDbType.VarChar)
         {
@@ -35,7 +41,10 @@ namespace SQE.CSharp.SQLGenerators
         {
             Setup();
 
-            var query = $"SELECT * FROM serilog.Logs WHERE {mainExpression};";
+            var query = $"SELECT * " +
+                $"FROM serilog.Logs " +
+                $"CROSS APPLY (SELECT CAST(Properties AS XML)) AS X(X) " + 
+                $"WHERE {mainExpression};";
             Command.CommandText = query;
 
             return query;
@@ -60,14 +69,14 @@ namespace SQE.CSharp.SQLGenerators
         {
             var valueParam = CreateSqlParameter(number, SqlDbType.Int);
 
-            return $"{property.ToString()} {op} @{valueParam}";
+            return $"({property.ToString()} {op} @{valueParam})";
         }
 
         public string ToCompareStringExp(ITerminalNode property, ITerminalNode op, ITerminalNode escapedString)
         {
             var valueParam = CreateSqlParameter(escapedString);
 
-            return $"{property.ToString()} {op} @{valueParam}";
+            return $"({property.ToString()} {op} @{valueParam})";
         }
 
         public SqlCommand GetResult()
