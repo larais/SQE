@@ -12,6 +12,7 @@
   <style type="text/css">
   body {
     background-color: #FFFFFF;
+    height: auto;
   }
   .ui.menu .item img.logo {
     margin-right: 1.5em;
@@ -40,13 +41,21 @@
     </div>
 
     <div class="ui main text container">
-    <h1 class="ui header">Semantic UI Fixed Template</h1>
-    <p>This is a basic fixed menu template using fixed size containers.</p>
+        <h1 class="ui header">SQE Tester</h1>
+        <div class="ui input">
+            <input id="expressionInput" type="text" onkeyup="checkInput()">
+        </div>
+        <div id="output" class="ui raised segment" style="display: none">
+            <p></p>
+        </div>
+        <div id="errorOutput" class="ui red segment" style="display: none"></div>
     </div>
 
     <script src="lib/require.js"></script>
     <script src="lib/jquery.min.js"></script>
     <script src="lib/semantic.min.js"></script>
+
+    <script src="app.js"></script>
 </body>
 
 </html>

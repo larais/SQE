@@ -3,7 +3,6 @@
 var antlr4 = require('antlr4/index');
 var SQEVisitor = require('./SQEVisitor').SQEVisitor;
 
-#pragma warning disable 3021
 var grammarFileName = "SQE.g4";
 
 var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
