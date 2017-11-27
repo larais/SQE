@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.Data;
 using System;
+using System.Collections.Generic;
 
 namespace SQE.CSharp.SQLGenerators
 {
@@ -9,9 +10,12 @@ namespace SQE.CSharp.SQLGenerators
     {
         public SqlCommand Command { get; private set; } = new SqlCommand();
 
+        private List<string> SqlSchemaColumns { get; set; }
+
         private void BuildXMLQueryString(ITerminalNode item)
         {
-            // TODO: X.exist('//*[@key="SourceContext" and contains(.,"CSV")]') = 1
+            // TODO: (X.exist('//*[@key="SourceContext" and contains(.,"CSV")]') = 1)
+
             throw new NotImplementedException();
         }
 
@@ -35,6 +39,15 @@ namespace SQE.CSharp.SQLGenerators
             Command.Parameters.Add(p);
 
             return propertyCounter;
+        }
+
+        public void Setup()
+        {
+            // TODO: Only Temporary List of Columns
+            SqlSchemaColumns = new List<string>()
+            {
+                "Id", "Message", "MessageTemplate", "Level", "TimeStamp", "Exception", "Properties"
+            };
         }
 
         public string VisitMainExp(string mainExpression)
@@ -67,16 +80,36 @@ namespace SQE.CSharp.SQLGenerators
 
         public string ToCompareNumberExp(ITerminalNode property, ITerminalNode op, ITerminalNode number)
         {
-            var valueParam = CreateSqlParameter(number, SqlDbType.Int);
+            var propertyString = property.ToString();
 
-            return $"({property.ToString()} {op} @{valueParam})";
+            if (SqlSchemaColumns.Contains(propertyString))
+            {
+                var valueParam = CreateSqlParameter(number, SqlDbType.Int);
+                return $"({property.ToString()} {op} @{valueParam})";
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public string ToCompareStringExp(ITerminalNode property, ITerminalNode op, ITerminalNode escapedString)
         {
+            var propertyString = property.ToString();
             var valueParam = CreateSqlParameter(escapedString);
 
-            return $"({property.ToString()} {op} @{valueParam})";
+            if (SqlSchemaColumns.Contains(propertyString))
+            {
+                return $"({property.ToString()} {op} @{valueParam})";
+            }
+            else
+            {
+                throw new NotImplementedException();
+
+                // TODO: SqlParameter, Different Operators
+                var propParam = CreateSqlParameter(property);
+                return $"(X.exist('//*[@key=\"@{propParam}\" and contains(.,\"@{valueParam}\")]') = 1)";
+            }            
         }
 
         public SqlCommand GetResult()
@@ -84,8 +117,5 @@ namespace SQE.CSharp.SQLGenerators
             return Command;
         }
 
-        public void Setup()
-        {
-        }
     }
 }
