@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="powershell.exe -executionpolicy bypass $(ProjectDir)build.ps1" />
+  </Target>
+
+  <ItemGroup>
+    <None Remove="antlr-4.7-complete.jar" />
+  </ItemGroup>
+
+</Project>
