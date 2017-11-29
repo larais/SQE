@@ -15,3 +15,9 @@ gulp.task('release', ["copy-antlr"], function () {
     ])
         .pipe(gulp.dest("wwwroot/lib"));
 });
+
+
+gulp.task("publish-docs", function () {
+    gulp.src("wwwroot/**/*")
+        .pipe(gulp.dest("../../docs"))
+})
