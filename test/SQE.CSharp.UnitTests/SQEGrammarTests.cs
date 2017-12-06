@@ -148,6 +148,27 @@ namespace SQE.CSharp.UnitTests
             Assert.AreEqual(expectedPropValue, property.Text);
         }
 
+        [DataTestMethod]
+        [DataRow("PropertyOne = 1 and PropertyTwo = 2")]
+        [DataRow("PropertyOne = 1 anD PropertyTwo = 2")]
+        [DataRow("PropertyOne = 1 aND PropertyTwo = 2")]
+        [DataRow("PropertyOne = 1 AND PropertyTwo = 2")]
+        [DataRow("PropertyOne = 1 AnD PropertyTwo = 2")]
+        public void Test_Logical_Operator_And_UpperLowerCase(string input)
+        {
+            Assert.IsFalse(ThrowsError(input));
+        }
+
+        [DataTestMethod]
+        [DataRow("PropertyOne = 1 or PropertyTwo = 2")]
+        [DataRow("PropertyOne = 1 oR PropertyTwo = 2")]
+        [DataRow("PropertyOne = 1 Or PropertyTwo = 2")]
+        [DataRow("PropertyOne = 1 OR PropertyTwo = 2")]
+        public void Test_Logical_Operator_Or_UpperLowerCase(string input)
+        {
+            Assert.IsFalse(ThrowsError(input));
+        }
+
         private bool ThrowsError(string input)
         {
             var throwsError = false;

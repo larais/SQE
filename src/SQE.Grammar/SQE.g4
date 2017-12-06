@@ -9,9 +9,15 @@ mainExpr          : '(' mainExpr ')'                    #parenthesisExp
                     | PROPERTY OPERATOR ESCAPEDSTRING   #compareStringExp
                     ;
 
-AND                 : 'and' ;
-OR                  : 'or' ;
+AND                 : A N D ;
+OR                  : O R ;
 OPERATOR            : (EQUALS|NOTEQUALS|GREATER|LESS);
+
+fragment A          : 'a' | 'A' ;
+fragment D			: 'd' | 'D' ;
+fragment N			: 'n' | 'N' ;
+fragment O			: 'o' | 'O' ;
+fragment R			: 'r' | 'R' ;
 
 NUMBER              : (DIGIT)+ ;
 PROPERTY         	: LETTER (LETTER | DIGIT)* ;
