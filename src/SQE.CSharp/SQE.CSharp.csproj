@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>https://github.com/larais/SQE</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/larais/SQE/blob/develop/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/larais/SQE</RepositoryUrl>
+    <Version>0.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
