@@ -1,5 +1,12 @@
-version: 1.0.{build}+{branch}
+version: 0.0.{build}+{branch}
 
+assembly_info:
+  patch: true
+  file: AssemblyInfo.*
+  assembly_version: "{version}"
+  assembly_file_version: "{version}"
+  assembly_informational_version: "{version}"
+  
 branches:
   except: 
   - gh-pages
