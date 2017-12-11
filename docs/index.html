@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>SQE JS Usage Example</title>
+
+  <link rel="stylesheet" type="text/css" href="lib/semantic.min.css">
+
+  <style type="text/css">
+  body {
+    background-color: #FFFFFF;
+    height: auto;
+  }
+  .ui.menu .item img.logo {
+    margin-right: 1.5em;
+  }
+  .main.container {
+    margin-top: 7em;
+  }
+  .wireframe {
+    margin-top: 2em;
+  }
+  .ui.footer.segment {
+    margin: 5em 0em 0em;
+    padding: 5em 0em;
+  }
+  </style>
+
+</head>
+<body>
+
+    <div class="ui fixed inverted menu">
+    <div class="ui container">
+        <a href="#" class="header item">
+        SQE JS Usage Example
+        </a>
+    </div>
+    </div>
+
+    <div class="ui main text container">
+        <h1 class="ui header">SQE Tester</h1>
+        <div class="ui input">
+            <input id="expressionInput" type="text" onkeyup="checkInput()">
+        </div>
+        <div id="output" class="ui raised segment" style="display: none">
+            <p></p>
+        </div>
+        <div id="errorOutput" class="ui red segment" style="display: none"></div>
+    </div>
+
+    <script src="lib/require.js"></script>
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/semantic.min.js"></script>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

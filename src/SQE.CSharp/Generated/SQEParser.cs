@@ -20,7 +20,6 @@
 #pragma warning disable 419
 
 namespace SQE {
-#pragma warning disable 3021
 using System;
 using System.IO;
 using System.Text;
@@ -47,7 +46,7 @@ public partial class SQEParser : Parser {
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "'('", "')'", "'and'", "'or'", null, null, null, null, "' '"
+		null, "'('", "')'", null, null, null, null, null, null, "' '"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, null, null, "AND", "OR", "OPERATOR", "NUMBER", "PROPERTY", "ESCAPEDSTRING", 
