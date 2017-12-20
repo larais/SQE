@@ -18,6 +18,10 @@ dotnet_csproj:
   file_version: '{version}'
   informational_version: '{version}'
 
+test: off
+test_script:
+  - vstest.console /logger:Appveyor "C:\projects\sqe\test\SQE.CSharp.UnitTests\bin\Debug\netcoreapp2.0\SQE.CSharp.UnitTests.dll"
+
 artifacts:
  - path: '**\*.nupkg'
    name: NuGet
