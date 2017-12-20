@@ -13,8 +13,6 @@ namespace SQE.CSharp
 
         public override TReturn VisitExpression([NotNull] SQEParser.ExpressionContext context)
         {
-            generator.Setup();
-
             var mainExpression = Visit(context.mainExpr());
             
             return generator.VisitMainExp(mainExpression);

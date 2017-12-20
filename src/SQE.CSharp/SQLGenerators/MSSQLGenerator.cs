@@ -10,13 +10,24 @@ namespace SQE.CSharp.SQLGenerators
     {
         public SqlCommand Command { get; private set; } = new SqlCommand();
 
-        private List<string> SqlSchemaColumns { get; set; }
+        private ICollection<string> SqlSchemaColumns { get; set; }
+
+        public string PropertyColumn { get; set; }
+
+        public string LogTable { get; set; }
+
+        public MSSQLGenerator(string logTable = "serilog.Logs", string propertyColumn = "Properties", ICollection<string> sqlSchemaColumns = null)
+        {
+            LogTable = logTable;
+            PropertyColumn = propertyColumn;
+            SqlSchemaColumns = sqlSchemaColumns ?? new[] { "Id", "Message", "MessageTemplate", "Level", "TimeStamp", "Exception", "Properties" };
+        }
 
         private void BuildXMLQueryString(ITerminalNode item)
         {
-            // TODO: (X.exist('//*[@key="SourceContext" and contains(.,"CSV")]') = 1)
-
             throw new NotImplementedException();
+
+            // TODO: (X.exist('//*[@key="SourceContext" and contains(.,"CSV")]') = 1)
         }
 
         private int CreateSqlParameter(ITerminalNode item, SqlDbType type = SqlDbType.VarChar)
@@ -41,25 +52,14 @@ namespace SQE.CSharp.SQLGenerators
             return propertyCounter;
         }
 
-        public void Setup()
-        {
-            // TODO: Only Temporary List of Columns
-            SqlSchemaColumns = new List<string>()
-            {
-                "Id", "Message", "MessageTemplate", "Level", "TimeStamp", "Exception", "Properties"
-            };
-        }
-
         public string VisitMainExp(string mainExpression)
         {
-            Setup();
-
             var query = $"SELECT * " +
-                $"FROM serilog.Logs " +
-                $"CROSS APPLY (SELECT CAST(Properties AS XML)) AS X(X) " + 
+                $"FROM {LogTable} " +
+                $"CROSS APPLY (SELECT CAST({PropertyColumn} AS XML)) AS X(X) " + 
                 $"WHERE {mainExpression};";
-            Command.CommandText = query;
 
+            Command.CommandText = query;
             return query;
         }
 

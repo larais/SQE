@@ -4,8 +4,6 @@ namespace SQE.CSharp
 {
     public interface IQueryGenerator<T, TResult>
     {
-        void Setup();
-
         T VisitMainExp(T left);
 
         T NestedExp(T content);
