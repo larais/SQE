@@ -1,5 +1,6 @@
-﻿using Antlr4.Runtime;
+﻿using SQE.CSharp.SQLGenerators;
 using System;
+using System.Data.SqlClient;
 
 namespace SQE.CSharp.Test
 {
@@ -15,28 +16,26 @@ namespace SQE.CSharp.Test
                 if (input == "exit")
                     break;
 
-
-                AntlrInputStream inputStream = new AntlrInputStream(input);
-                var lexer = new SQELexer(inputStream);
-                CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
-                var parser = new SQEParser(commonTokenStream);
-
-                parser.RemoveErrorListeners();
-                parser.AddErrorListener(new PrimitiveErrorListener());
-
-                try
+                if (SQE.IsValidSyntax(input))
                 {
-                    SQEParser.ExpressionContext expressionContext = parser.expression();
-                    Console.WriteLine("Tree expression context: " + expressionContext.ToStringTree());
+                    var mssqlQueryGenerator = new MSSQLGenerator();
+                    var sqlCommand = SQE.GenerateCommand(mssqlQueryGenerator, input);
 
-                    var visitor = new MSSQLVisitor();
-                    Console.WriteLine("Visiting tree: " + visitor.Visit(expressionContext) + Environment.NewLine);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
+                    using (var connection = new SqlConnection(@""))
+                    {
+                        connection.Open();
+
+                        sqlCommand.Connection = connection;
+                        sqlCommand.Prepare();
+                        var reader = sqlCommand.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            Console.WriteLine($"RowID: {reader[0]}");
+                        }
+                    }
                 }
             }
-        }
+        } 
     }
 }

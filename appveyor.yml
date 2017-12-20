@@ -1,4 +1,4 @@
-version: 1.0.{build}+{branch}
+version: 0.0.{build}
 
 branches:
   except: 
@@ -9,6 +9,22 @@ image: Visual Studio 2017
 before_build:
  - nuget restore
  
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+
 artifacts:
  - path: '**\*.nupkg'
    name: NuGet
+
+for:
+-
+  branches:
+    only:
+      - develop
+  version: 0.0.{build}-preview
