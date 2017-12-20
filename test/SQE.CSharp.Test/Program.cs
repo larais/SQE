@@ -1,5 +1,4 @@
-﻿using Antlr4.Runtime;
-using SQE.CSharp.SQLGenerators;
+﻿using SQE.CSharp.SQLGenerators;
 using System;
 using System.Data.SqlClient;
 
@@ -17,15 +16,11 @@ namespace SQE.CSharp.Test
                 if (input == "exit")
                     break;
 
-                var expressionContext = ProcessInput(input);
-                Console.WriteLine("Tree expression context: " + expressionContext.ToStringTree());
-
-                var mssqlQueryGenerator = new MSSQLGenerator();
-
-                var sqlCommand = GenerateCommand(mssqlQueryGenerator, expressionContext);
-
-                if (IsValid(input))
+                if (SQE.IsValidSyntax(input))
                 {
+                    var mssqlQueryGenerator = new MSSQLGenerator();
+                    var sqlCommand = SQE.GenerateCommand(mssqlQueryGenerator, input);
+
                     using (var connection = new SqlConnection(@""))
                     {
                         connection.Open();
@@ -41,38 +36,6 @@ namespace SQE.CSharp.Test
                     }
                 }
             }
-        }
-
-        private static SQEParser.ExpressionContext ProcessInput(string input)
-        {
-            AntlrInputStream inputStream = new AntlrInputStream(input);
-            var lexer = new SQELexer(inputStream);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
-            var parser = new SQEParser(commonTokenStream);
-
-            parser.RemoveErrorListeners();
-            parser.AddErrorListener(new PrimitiveErrorListener());
-
-            SQEParser.ExpressionContext expressionContext = parser.expression();
-
-            return expressionContext;
-        }
-
-        private static TResult GenerateCommand<TReturn, TResult>(IQueryGenerator<TReturn, TResult> qg, SQEParser.ExpressionContext expressionContext) where TReturn : class
-        {
-            var visitor = new AbstractTreeVisitor<TReturn, TResult>(qg);
-            visitor.Visit(expressionContext);
-
-            return qg.GetResult();
-        }
-
-        private static bool IsValid(string intpusd)
-        {
-            return true; //HACK:
-
-            // TODO: Call ProcessInput, verify no Exception is Thrown
-
-            throw new NotImplementedException();
-        }
+        } 
     }
 }
