@@ -9,13 +9,6 @@ image: Visual Studio 2017
 before_build:
  - nuget restore
  
-for:
--
-  branches:
-    only:
-      - develop
-  version: 0.0.{build}-preview
-  
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
@@ -29,3 +22,9 @@ artifacts:
  - path: '**\*.nupkg'
    name: NuGet
 
+for:
+-
+  branches:
+    only:
+      - develop
+  version: 0.0.{build}-preview
