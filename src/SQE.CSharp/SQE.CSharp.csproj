@@ -4,10 +4,15 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageProjectUrl>https://github.com/larais/SQE</PackageProjectUrl>
+    <PackageProjectUrl>https://larais.github.io/SQE/</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/larais/SQE/blob/develop/LICENSE</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/larais/SQE</RepositoryUrl>
     <Version>0.0.1</Version>
+    <Authors>David Morais Ferreira, Sebastian Lang</Authors>
+    <Company>larais</Company>
+    <Product>SQE - Simple Search Query Engine</Product>
+    <Description>Simple Search Query Engine</Description>
+    <PackageTags>simple search query engine sqe larais antlr4 grammar syntax</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
