@@ -1,5 +1,5 @@
 version: 0.0.{build}
-
+configuration: Release
 branches:
   except: 
   - gh-pages
@@ -32,6 +32,7 @@ for:
     only:
       - develop
   version: 0.0.{build}-preview
+  configuration: Debug
   
 -
   branches:
