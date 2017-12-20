@@ -20,7 +20,7 @@ dotnet_csproj:
 
 test: off
 test_script:
-  - vstest.console /logger:Appveyor "C:\projects\sqe\test\SQE.CSharp.UnitTests\bin\Debug\netcoreapp2.0\SQE.CSharp.UnitTests.dll"
+  - vstest.console /logger:Appveyor "C:\projects\sqe\test\SQE.CSharp.UnitTests\bin\%CONFIGURATION%\netcoreapp2.0\SQE.CSharp.UnitTests.dll"
 
 artifacts:
  - path: '**\*.nupkg'
@@ -36,5 +36,5 @@ for:
 -
   branches:
     only:
-      - feature/.*/
+      - /feature.*/
   version: 0.0.{build}-{branch}-preview
