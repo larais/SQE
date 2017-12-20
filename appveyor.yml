@@ -1,14 +1,5 @@
 version: 0.0.{build}
 
-dotnet_csproj:
-  patch: true
-  file: '**\*.csproj'
-  version: '{version}'
-  package_version: '{version}'
-  assembly_version: '{version}'
-  file_version: '{version}'
-  informational_version: '{version}'
-  
 branches:
   except: 
   - gh-pages
@@ -18,6 +9,23 @@ image: Visual Studio 2017
 before_build:
  - nuget restore
  
+for:
+-
+  branches:
+    only:
+      - develop
+  version: 0.0.{build}-preview
+  
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+
 artifacts:
  - path: '**\*.nupkg'
    name: NuGet
+
