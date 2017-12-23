@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace SQE.CSharp
+namespace SQE
 {
     public class PrimitiveErrorListener : BaseErrorListener, IAntlrErrorListener<int>
     {

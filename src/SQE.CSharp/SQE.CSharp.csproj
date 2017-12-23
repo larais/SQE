@@ -13,6 +13,7 @@
     <Product>SQE - Simple Search Query Engine</Product>
     <Description>Simple Search Query Engine</Description>
     <PackageTags>simple search query engine sqe larais antlr4 grammar syntax</PackageTags>
+    <RootNamespace>SQE</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

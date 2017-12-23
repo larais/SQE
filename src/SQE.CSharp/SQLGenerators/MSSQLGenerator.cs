@@ -4,7 +4,7 @@ using System.Data;
 using System;
 using System.Collections.Generic;
 
-namespace SQE.CSharp.SQLGenerators
+namespace SQE.SQLGenerators
 {
     public class MSSQLGenerator : IQueryGenerator<string, SqlCommand>
     {

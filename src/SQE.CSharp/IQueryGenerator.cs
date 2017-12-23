@@ -1,6 +1,6 @@
 ﻿using Antlr4.Runtime.Tree;
 
-namespace SQE.CSharp
+namespace SQE
 {
     public interface IQueryGenerator<T, TResult>
     {

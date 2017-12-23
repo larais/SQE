@@ -1,6 +1,6 @@
 ﻿using Antlr4.Runtime.Misc;
 
-namespace SQE.CSharp
+namespace SQE
 {
     public class AbstractTreeVisitor<TReturn, TResult> : SQEBaseVisitor<TReturn> where TReturn : class
     {

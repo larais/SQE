@@ -1,4 +1,4 @@
-﻿using SQE.CSharp.SQLGenerators;
+﻿using SQE.SQLGenerators;
 using System;
 using System.Data.SqlClient;
 
