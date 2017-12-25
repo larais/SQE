@@ -169,6 +169,16 @@ namespace SQE.CSharp.UnitTests
             Assert.IsFalse(ThrowsError(input));
         }
 
+        [DataTestMethod]
+        [DataRow("")]
+        [DataRow("  ")]
+        [DataRow(" ")]
+        [DataRow("        ")]
+        public void Test_Empty(string input)
+        {
+            Assert.IsFalse(ThrowsError(input));
+        }
+
         private bool ThrowsError(string input)
         {
             var throwsError = false;

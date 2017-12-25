@@ -54,10 +54,16 @@ namespace SQE.SQLGenerators
 
         public string VisitMainExp(string mainExpression)
         {
-            var query = $"SELECT * " +
-                $"FROM {LogTable} " +
-                $"CROSS APPLY (SELECT CAST({PropertyColumn} AS XML)) AS X(X) " + 
-                $"WHERE {mainExpression};";
+            var query = 
+                $"SELECT * " +
+                $"FROM {LogTable}";
+
+            if (!string.IsNullOrEmpty(mainExpression))
+            {
+                query +=
+                   $" CROSS APPLY (SELECT CAST({PropertyColumn} AS XML)) AS X(X) " +
+                    $"WHERE {mainExpression};";
+            }
 
             Command.CommandText = query;
             return query;

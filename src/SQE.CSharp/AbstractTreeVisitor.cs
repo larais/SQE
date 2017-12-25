@@ -13,7 +13,8 @@ namespace SQE
 
         public override TReturn VisitExpression([NotNull] SQEParser.ExpressionContext context)
         {
-            var mainExpression = Visit(context.mainExpr());
+            var mex = context.mainExpr();
+            TReturn mainExpression = mex != null ? Visit(mex) : null;
             
             return generator.VisitMainExp(mainExpression);
         }

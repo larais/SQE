@@ -105,10 +105,27 @@ public partial class SQEParser : Parser {
 		ExpressionContext _localctx = new ExpressionContext(Context, State);
 		EnterRule(_localctx, 0, RULE_expression);
 		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 4; mainExpr(0);
-			State = 5; Match(Eof);
+			State = 8;
+			ErrorHandler.Sync(this);
+			switch (TokenStream.LA(1)) {
+			case T__0:
+			case PROPERTY:
+				EnterOuterAlt(_localctx, 1);
+				{
+				{
+				State = 4; mainExpr(0);
+				State = 5; Match(Eof);
+				}
+				}
+				break;
+			case Eof:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 7; Match(Eof);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -214,18 +231,18 @@ public partial class SQEParser : Parser {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 18;
+			State = 21;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,0,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,1,Context) ) {
 			case 1:
 				{
 				_localctx = new ParenthesisExpContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
 
-				State = 8; Match(T__0);
-				State = 9; mainExpr(0);
-				State = 10; Match(T__1);
+				State = 11; Match(T__0);
+				State = 12; mainExpr(0);
+				State = 13; Match(T__1);
 				}
 				break;
 			case 2:
@@ -233,9 +250,9 @@ public partial class SQEParser : Parser {
 				_localctx = new CompareNumberExpContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 12; Match(PROPERTY);
-				State = 13; Match(OPERATOR);
-				State = 14; Match(NUMBER);
+				State = 15; Match(PROPERTY);
+				State = 16; Match(OPERATOR);
+				State = 17; Match(NUMBER);
 				}
 				break;
 			case 3:
@@ -243,51 +260,51 @@ public partial class SQEParser : Parser {
 				_localctx = new CompareStringExpContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 15; Match(PROPERTY);
-				State = 16; Match(OPERATOR);
-				State = 17; Match(ESCAPEDSTRING);
+				State = 18; Match(PROPERTY);
+				State = 19; Match(OPERATOR);
+				State = 20; Match(ESCAPEDSTRING);
 				}
 				break;
 			}
 			Context.Stop = TokenStream.LT(-1);
-			State = 28;
+			State = 31;
 			ErrorHandler.Sync(this);
-			_alt = Interpreter.AdaptivePredict(TokenStream,2,Context);
+			_alt = Interpreter.AdaptivePredict(TokenStream,3,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( ParseListeners!=null )
 						TriggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					State = 26;
+					State = 29;
 					ErrorHandler.Sync(this);
-					switch ( Interpreter.AdaptivePredict(TokenStream,1,Context) ) {
+					switch ( Interpreter.AdaptivePredict(TokenStream,2,Context) ) {
 					case 1:
 						{
 						_localctx = new AndExpContext(new MainExprContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_mainExpr);
-						State = 20;
+						State = 23;
 						if (!(Precpred(Context, 4))) throw new FailedPredicateException(this, "Precpred(Context, 4)");
-						State = 21; Match(AND);
-						State = 22; mainExpr(5);
+						State = 24; Match(AND);
+						State = 25; mainExpr(5);
 						}
 						break;
 					case 2:
 						{
 						_localctx = new OrExpContext(new MainExprContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_mainExpr);
-						State = 23;
+						State = 26;
 						if (!(Precpred(Context, 3))) throw new FailedPredicateException(this, "Precpred(Context, 3)");
-						State = 24; Match(OR);
-						State = 25; mainExpr(4);
+						State = 27; Match(OR);
+						State = 28; mainExpr(4);
 						}
 						break;
 					}
 					} 
 				}
-				State = 30;
+				State = 33;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,2,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,3,Context);
 			}
 			}
 		}
@@ -318,34 +335,36 @@ public partial class SQEParser : Parser {
 
 	private static char[] _serializedATN = {
 		'\x3', '\x608B', '\xA72A', '\x8133', '\xB9ED', '\x417C', '\x3BE7', '\x7786', 
-		'\x5964', '\x3', '\f', '\"', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
-		'\t', '\x3', '\x3', '\x2', '\x3', '\x2', '\x3', '\x2', '\x3', '\x3', '\x3', 
+		'\x5964', '\x3', '\f', '%', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', '\t', 
+		'\x3', '\x3', '\x2', '\x3', '\x2', '\x3', '\x2', '\x3', '\x2', '\x5', 
+		'\x2', '\v', '\n', '\x2', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', 
 		'\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', 
-		'\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x5', 
-		'\x3', '\x15', '\n', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', 
-		'\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\a', '\x3', '\x1D', '\n', '\x3', 
-		'\f', '\x3', '\xE', '\x3', ' ', '\v', '\x3', '\x3', '\x3', '\x2', '\x3', 
-		'\x4', '\x4', '\x2', '\x4', '\x2', '\x2', '\x2', '#', '\x2', '\x6', '\x3', 
-		'\x2', '\x2', '\x2', '\x4', '\x14', '\x3', '\x2', '\x2', '\x2', '\x6', 
-		'\a', '\x5', '\x4', '\x3', '\x2', '\a', '\b', '\a', '\x2', '\x2', '\x3', 
-		'\b', '\x3', '\x3', '\x2', '\x2', '\x2', '\t', '\n', '\b', '\x3', '\x1', 
-		'\x2', '\n', '\v', '\a', '\x3', '\x2', '\x2', '\v', '\f', '\x5', '\x4', 
-		'\x3', '\x2', '\f', '\r', '\a', '\x4', '\x2', '\x2', '\r', '\x15', '\x3', 
-		'\x2', '\x2', '\x2', '\xE', '\xF', '\a', '\t', '\x2', '\x2', '\xF', '\x10', 
-		'\a', '\a', '\x2', '\x2', '\x10', '\x15', '\a', '\b', '\x2', '\x2', '\x11', 
-		'\x12', '\a', '\t', '\x2', '\x2', '\x12', '\x13', '\a', '\a', '\x2', '\x2', 
-		'\x13', '\x15', '\a', '\n', '\x2', '\x2', '\x14', '\t', '\x3', '\x2', 
-		'\x2', '\x2', '\x14', '\xE', '\x3', '\x2', '\x2', '\x2', '\x14', '\x11', 
-		'\x3', '\x2', '\x2', '\x2', '\x15', '\x1E', '\x3', '\x2', '\x2', '\x2', 
-		'\x16', '\x17', '\f', '\x6', '\x2', '\x2', '\x17', '\x18', '\a', '\x5', 
-		'\x2', '\x2', '\x18', '\x1D', '\x5', '\x4', '\x3', '\a', '\x19', '\x1A', 
-		'\f', '\x5', '\x2', '\x2', '\x1A', '\x1B', '\a', '\x6', '\x2', '\x2', 
-		'\x1B', '\x1D', '\x5', '\x4', '\x3', '\x6', '\x1C', '\x16', '\x3', '\x2', 
-		'\x2', '\x2', '\x1C', '\x19', '\x3', '\x2', '\x2', '\x2', '\x1D', ' ', 
-		'\x3', '\x2', '\x2', '\x2', '\x1E', '\x1C', '\x3', '\x2', '\x2', '\x2', 
-		'\x1E', '\x1F', '\x3', '\x2', '\x2', '\x2', '\x1F', '\x5', '\x3', '\x2', 
-		'\x2', '\x2', ' ', '\x1E', '\x3', '\x2', '\x2', '\x2', '\x5', '\x14', 
-		'\x1C', '\x1E',
+		'\x3', '\x3', '\x3', '\x3', '\x3', '\x5', '\x3', '\x18', '\n', '\x3', 
+		'\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', 
+		'\x3', '\x3', '\a', '\x3', ' ', '\n', '\x3', '\f', '\x3', '\xE', '\x3', 
+		'#', '\v', '\x3', '\x3', '\x3', '\x2', '\x3', '\x4', '\x4', '\x2', '\x4', 
+		'\x2', '\x2', '\x2', '\'', '\x2', '\n', '\x3', '\x2', '\x2', '\x2', '\x4', 
+		'\x17', '\x3', '\x2', '\x2', '\x2', '\x6', '\a', '\x5', '\x4', '\x3', 
+		'\x2', '\a', '\b', '\a', '\x2', '\x2', '\x3', '\b', '\v', '\x3', '\x2', 
+		'\x2', '\x2', '\t', '\v', '\a', '\x2', '\x2', '\x3', '\n', '\x6', '\x3', 
+		'\x2', '\x2', '\x2', '\n', '\t', '\x3', '\x2', '\x2', '\x2', '\v', '\x3', 
+		'\x3', '\x2', '\x2', '\x2', '\f', '\r', '\b', '\x3', '\x1', '\x2', '\r', 
+		'\xE', '\a', '\x3', '\x2', '\x2', '\xE', '\xF', '\x5', '\x4', '\x3', '\x2', 
+		'\xF', '\x10', '\a', '\x4', '\x2', '\x2', '\x10', '\x18', '\x3', '\x2', 
+		'\x2', '\x2', '\x11', '\x12', '\a', '\t', '\x2', '\x2', '\x12', '\x13', 
+		'\a', '\a', '\x2', '\x2', '\x13', '\x18', '\a', '\b', '\x2', '\x2', '\x14', 
+		'\x15', '\a', '\t', '\x2', '\x2', '\x15', '\x16', '\a', '\a', '\x2', '\x2', 
+		'\x16', '\x18', '\a', '\n', '\x2', '\x2', '\x17', '\f', '\x3', '\x2', 
+		'\x2', '\x2', '\x17', '\x11', '\x3', '\x2', '\x2', '\x2', '\x17', '\x14', 
+		'\x3', '\x2', '\x2', '\x2', '\x18', '!', '\x3', '\x2', '\x2', '\x2', '\x19', 
+		'\x1A', '\f', '\x6', '\x2', '\x2', '\x1A', '\x1B', '\a', '\x5', '\x2', 
+		'\x2', '\x1B', ' ', '\x5', '\x4', '\x3', '\a', '\x1C', '\x1D', '\f', '\x5', 
+		'\x2', '\x2', '\x1D', '\x1E', '\a', '\x6', '\x2', '\x2', '\x1E', ' ', 
+		'\x5', '\x4', '\x3', '\x6', '\x1F', '\x19', '\x3', '\x2', '\x2', '\x2', 
+		'\x1F', '\x1C', '\x3', '\x2', '\x2', '\x2', ' ', '#', '\x3', '\x2', '\x2', 
+		'\x2', '!', '\x1F', '\x3', '\x2', '\x2', '\x2', '!', '\"', '\x3', '\x2', 
+		'\x2', '\x2', '\"', '\x5', '\x3', '\x2', '\x2', '\x2', '#', '!', '\x3', 
+		'\x2', '\x2', '\x2', '\x6', '\n', '\x17', '\x1F', '!',
 	};
 
 	public static readonly ATN _ATN =

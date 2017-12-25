@@ -1,6 +1,6 @@
 grammar SQE;
 
-expression : mainExpr EOF;
+expression : (mainExpr EOF) | EOF;
 
 mainExpr          : '(' mainExpr ')'                    #parenthesisExp
                     | mainExpr AND mainExpr             #andExp
