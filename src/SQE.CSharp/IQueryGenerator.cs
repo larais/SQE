@@ -4,6 +4,8 @@ namespace SQE
 {
     public interface IQueryGenerator<T, TResult>
     {
+        void Initialize();
+
         T VisitMainExp(T left);
 
         T NestedExp(T content);

@@ -8,61 +8,44 @@ namespace SQE.SQLGenerators
 {
     public class MSSQLGenerator : IQueryGenerator<string, SqlCommand>
     {
+        private bool queryContainsProperty;
+
         public SqlCommand Command { get; private set; } = new SqlCommand();
 
-        private ICollection<string> SqlSchemaColumns { get; set; }
+        public ICollection<string> SqlSchemaColumns { get; private set; }
 
         public string PropertyColumn { get; set; }
 
         public string LogTable { get; set; }
 
-        public MSSQLGenerator(string logTable = "serilog.Logs", string propertyColumn = "Properties", ICollection<string> sqlSchemaColumns = null)
+        public MSSQLGenerator(string logTable = "Logs", string propertyColumn = "Properties", ICollection<string> sqlSchemaColumns = null)
         {
             LogTable = logTable;
             PropertyColumn = propertyColumn;
             SqlSchemaColumns = sqlSchemaColumns ?? new[] { "Id", "Message", "MessageTemplate", "Level", "TimeStamp", "Exception", "Properties" };
         }
 
-        private void BuildXMLQueryString(ITerminalNode item)
+        public void Initialize()
         {
-            throw new NotImplementedException();
-
-            // TODO: (X.exist('//*[@key="SourceContext" and contains(.,"CSV")]') = 1)
-        }
-
-        private int CreateSqlParameter(ITerminalNode item, SqlDbType type = SqlDbType.VarChar)
-        {
-            var propertyCounter = Command.Parameters.Count;
-
-            var p = new SqlParameter($"@{propertyCounter}", type);
-            if (type == SqlDbType.VarChar)
-            {
-                var trimmedString = item.ToString().Trim('"');
-                p.Value = trimmedString;
-                p.Size = trimmedString.Length;
-            }
-            else
-            {
-                //Assert Int
-                p.Value = int.Parse(item.ToString());
-            }
-
-            Command.Parameters.Add(p);
-
-            return propertyCounter;
+            queryContainsProperty = false;
         }
 
         public string VisitMainExp(string mainExpression)
         {
             var query = 
-                $"SELECT * " +
-                $"FROM {LogTable}";
+                    $"SELECT * " +
+                    $"FROM {LogTable}";
 
             if (!string.IsNullOrEmpty(mainExpression))
             {
+                if (queryContainsProperty)
+                {
+                    query +=
+                    $" CROSS APPLY (SELECT CAST({PropertyColumn} AS XML)) AS X(X)";
+                }
+
                 query +=
-                   $" CROSS APPLY (SELECT CAST({PropertyColumn} AS XML)) AS X(X) " +
-                    $"WHERE {mainExpression};";
+                    $" WHERE {mainExpression};";
             }
 
             Command.CommandText = query;
@@ -95,6 +78,7 @@ namespace SQE.SQLGenerators
             }
             else
             {
+                queryContainsProperty = true;
                 throw new NotImplementedException();
             }
         }
@@ -110,6 +94,7 @@ namespace SQE.SQLGenerators
             }
             else
             {
+                queryContainsProperty = true;
                 throw new NotImplementedException();
 
                 // TODO: SqlParameter, Different Operators
@@ -123,5 +108,33 @@ namespace SQE.SQLGenerators
             return Command;
         }
 
+        private void BuildXMLQueryString(ITerminalNode item)
+        {
+            throw new NotImplementedException();
+
+            // TODO: (X.exist('//*[@key="SourceContext" and contains(.,"CSV")]') = 1)
+        }
+
+        private int CreateSqlParameter(ITerminalNode item, SqlDbType type = SqlDbType.VarChar)
+        {
+            var propertyCounter = Command.Parameters.Count;
+
+            var p = new SqlParameter($"@{propertyCounter}", type);
+            if (type == SqlDbType.VarChar)
+            {
+                var trimmedString = item.ToString().Trim('"');
+                p.Value = trimmedString;
+                p.Size = trimmedString.Length;
+            }
+            else
+            {
+                //Assert Int
+                p.Value = int.Parse(item.ToString());
+            }
+
+            Command.Parameters.Add(p);
+
+            return propertyCounter;
+        }
     }
 }
