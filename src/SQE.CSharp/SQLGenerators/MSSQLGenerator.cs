@@ -18,11 +18,17 @@ namespace SQE.SQLGenerators
 
         public string LogTable { get; set; }
 
-        public MSSQLGenerator(string logTable = "Logs", string propertyColumn = "Properties", ICollection<string> sqlSchemaColumns = null)
+        public int PaginationWindowSize { get; set; }
+
+        public int PaginationOffset { get; set; }
+
+        public MSSQLGenerator(string logTable = "Logs", string propertyColumn = "Properties", ICollection<string> sqlSchemaColumns = null, int paginationWindowSize = 25, int paginationOffset = 0)
         {
             LogTable = logTable;
             PropertyColumn = propertyColumn;
             SqlSchemaColumns = sqlSchemaColumns ?? new[] { "Id", "Message", "MessageTemplate", "Level", "TimeStamp", "Exception", "Properties" };
+            PaginationWindowSize = paginationWindowSize;
+            PaginationOffset = paginationOffset;
         }
 
         public void Initialize()
@@ -32,7 +38,7 @@ namespace SQE.SQLGenerators
 
         public string VisitMainExp(string mainExpression)
         {
-            var query = 
+            var query =
                     $"SELECT * " +
                     $"FROM {LogTable}";
 
@@ -40,12 +46,13 @@ namespace SQE.SQLGenerators
             {
                 if (queryContainsProperty)
                 {
-                    query +=
-                    $" CROSS APPLY (SELECT CAST({PropertyColumn} AS XML)) AS X(X)";
+                    query += $" CROSS APPLY (SELECT CAST({PropertyColumn} AS XML)) AS X(X)";
                 }
 
                 query +=
-                    $" WHERE {mainExpression};";
+                    $" WHERE {mainExpression} " +
+                    $" ORDER BY Id" +
+                    $" OFFSET {PaginationOffset} ROWS FETCH NEXT {PaginationWindowSize} ROWS ONLY;";
             }
 
             Command.CommandText = query;
@@ -100,7 +107,7 @@ namespace SQE.SQLGenerators
                 // TODO: SqlParameter, Different Operators
                 var propParam = CreateSqlParameter(property);
                 return $"(X.exist('//*[@key=\"@{propParam}\" and contains(.,\"@{valueParam}\")]') = 1)";
-            }            
+            }
         }
 
         public SqlCommand GetResult()

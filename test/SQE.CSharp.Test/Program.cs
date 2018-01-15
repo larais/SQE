@@ -18,8 +18,8 @@ namespace SQE.CSharp.Test
 
                 if (SQE.IsValidSyntax(input))
                 {
-                    var mssqlQueryGenerator = new MSSQLGenerator();
-                    var sqlCommand = SQE.GenerateCommand(mssqlQueryGenerator, input);
+                    var mssqlQueryGenerator = new MSSQLGenerator(logTable: "serilog.Logs");
+                    var sqlCommand = SQE.GenerateCommand(mssqlQueryGenerator, input, paginationOffset: 0);
 
                     using (var connection = new SqlConnection(@""))
                     {

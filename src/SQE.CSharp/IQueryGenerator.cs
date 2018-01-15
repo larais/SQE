@@ -6,6 +6,8 @@ namespace SQE
     {
         void Initialize();
 
+        int PaginationOffset { get; set; }
+
         T VisitMainExp(T left);
 
         T NestedExp(T content);
