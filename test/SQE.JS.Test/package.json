@@ -1,6 +1,6 @@
 {
   "name": "sqe.js.test",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "gulpfile.js",
   "scripts": {
@@ -12,8 +12,6 @@
     "gulp": "^4.0.0"
   },
   "dependencies": {
-    "antlr4": "^4.7.1",
-    "jquery": "^3.3.1",
-    "semantic-ui": "^2.4.0"
+    "antlr4": "^4.7.1"
   }
 }
