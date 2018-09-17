@@ -7,17 +7,17 @@ gulp.task("copy-antlr", function () {
         .pipe(gulp.dest("wwwroot/antlr4"));
 });
 
-gulp.task('release', ["copy-antlr"], function () {
+gulp.task('release', gulp.series(["copy-antlr"], function () {
     gulp.src([
         "node_modules/jquery/dist/jquery.min.js",
         "semantic/dist/semantic.min.css",
         "semantic/dist/semantic.min.js"
     ])
         .pipe(gulp.dest("wwwroot/lib"));
-});
+}));
 
 
 gulp.task("publish-docs", function () {
     gulp.src("wwwroot/**/*")
-        .pipe(gulp.dest("../../docs"))
-})
+        .pipe(gulp.dest("../../docs"));
+});

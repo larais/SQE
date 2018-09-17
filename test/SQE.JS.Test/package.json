@@ -9,11 +9,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "^3.9.1"
+    "gulp": "^4.0.0"
   },
   "dependencies": {
     "antlr4": "^4.7.1",
     "jquery": "^3.3.1",
-    "semantic-ui": "^2.3.1"
+    "semantic-ui": "^2.4.0"
   }
 }
