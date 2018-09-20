@@ -5,8 +5,13 @@ namespace SQE
 {
     public class SQE
     {
-        public static TResult GenerateCommand<TReturn, TResult>(IQueryGenerator<TReturn, TResult> qg, string input, int paginationOffset = 0) where TReturn : class
+        public static TResult GenerateCommand<TReturn, TResult>(IQueryGenerator<TReturn, TResult> qg, string input, int paginationOffset = 1) where TReturn : class
         {
+            if (paginationOffset < 1)
+            {
+                throw new InvalidOperationException($"{nameof(paginationOffset)} cannot be smaller than 1");
+            }
+
             SQEParser.ExpressionContext expressionContext = ProcessInput(input);
             qg.PaginationOffset = paginationOffset;
             var visitor = new AbstractTreeVisitor<TReturn, TResult>(qg);

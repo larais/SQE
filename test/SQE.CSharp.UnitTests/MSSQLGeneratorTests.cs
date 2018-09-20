@@ -12,7 +12,7 @@ namespace SQE.CSharp.UnitTests
         {
             var sqlCommand = SQE.GenerateCommand(new MSSQLGenerator("slg.lgs"), string.Empty);
             Assert.IsNotNull(sqlCommand);
-            Assert.AreEqual("SELECT * FROM slg.lgs", sqlCommand.CommandText);
+            Assert.AreEqual("SELECT * FROM slg.lgs ORDER BY Id", sqlCommand.CommandText);
         }
 
         [TestMethod]
@@ -20,7 +20,7 @@ namespace SQE.CSharp.UnitTests
         {
             var sqlCommand = SQE.GenerateCommand(new MSSQLGenerator("slg.lgs"), "  ");
             Assert.IsNotNull(sqlCommand);
-            Assert.AreEqual("SELECT * FROM slg.lgs", sqlCommand.CommandText);
+            Assert.AreEqual("SELECT * FROM slg.lgs ORDER BY Id", sqlCommand.CommandText);
         }
 
         [DataTestMethod]
@@ -42,6 +42,17 @@ namespace SQE.CSharp.UnitTests
             var sqlCommand = SQE.GenerateCommand(new MSSQLGenerator("slg.lgs"), query);
             Assert.IsNotNull(sqlCommand);
             Assert.IsTrue(sqlCommand.CommandText.StartsWith("SELECT * FROM slg.lgs WHERE"));
+        }
+
+        [DataTestMethod]
+        [DataRow(1)]
+        [DataRow(2)]
+        public void MSSQLGen_Paging(int page)
+        {
+            int pageSize = 25;
+            var sqlCommand = SQE.GenerateCommand(new MSSQLGenerator("slg.lgs", paginationWindowSize: pageSize, usePaging: true), string.Empty, paginationOffset: page);
+            Assert.IsNotNull(sqlCommand);
+            Assert.IsTrue(sqlCommand.CommandText == $"SELECT * FROM slg.lgs ORDER BY Id OFFSET { (page - 1) * pageSize } ROWS FETCH NEXT 25 ROWS ONLY;");
         }
     }
 }

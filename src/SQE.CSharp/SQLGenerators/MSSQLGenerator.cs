@@ -18,17 +18,19 @@ namespace SQE.SQLGenerators
 
         public string LogTable { get; set; }
 
+        public bool UsePaging { get; set; }
+
         public int PaginationWindowSize { get; set; }
 
-        public int PaginationOffset { get; set; }
+        public int PaginationOffset { get; set; } = 1;
 
-        public MSSQLGenerator(string logTable = "Logs", string propertyColumn = "Properties", ICollection<string> sqlSchemaColumns = null, int paginationWindowSize = 25, int paginationOffset = 0)
+        public MSSQLGenerator(string logTable = "Logs", string propertyColumn = "Properties", ICollection<string> sqlSchemaColumns = null, int paginationWindowSize = 25, bool usePaging = false)
         {
             LogTable = logTable;
             PropertyColumn = propertyColumn;
             SqlSchemaColumns = sqlSchemaColumns ?? new[] { "Id", "Message", "MessageTemplate", "Level", "TimeStamp", "Exception", "Properties" };
             PaginationWindowSize = paginationWindowSize;
-            PaginationOffset = paginationOffset;
+            UsePaging = usePaging;
         }
 
         public void Initialize()
@@ -49,10 +51,14 @@ namespace SQE.SQLGenerators
                     query += $" CROSS APPLY (SELECT CAST({PropertyColumn} AS XML)) AS X(X)";
                 }
 
-                query +=
-                    $" WHERE {mainExpression} " +
-                    $" ORDER BY Id" +
-                    $" OFFSET {PaginationOffset} ROWS FETCH NEXT {PaginationWindowSize} ROWS ONLY;";
+                query += $" WHERE {mainExpression} ";
+            }
+
+            query += $" ORDER BY Id";
+
+            if (UsePaging)
+            {
+                query += $" OFFSET {(PaginationOffset - 1) * PaginationWindowSize} ROWS FETCH NEXT {PaginationWindowSize} ROWS ONLY;";
             }
 
             Command.CommandText = query;
