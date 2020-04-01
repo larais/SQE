@@ -1,28 +1,28 @@
 {
-  "_from": "antlr4@4.7.2",
-  "_id": "antlr4@4.7.2",
+  "_from": "antlr4@4.8.0",
+  "_id": "antlr4@4.8.0",
   "_inBundle": false,
-  "_integrity": "sha512-vZA1xYufXLe3LX+ja9rIVxjRmILb1x3k7KYZHltRbfJtXjJ1DlFIqt+CbPYmghx0EuzY9DajiDw+MdyEt1qAsQ==",
+  "_integrity": "sha512-en/MxQ4OkPgGJQ3wD/muzj1uDnFSzdFIhc2+c6bHZokWkuBb6RRvFjpWhPxWLbgQvaEzldJZ0GSQpfSAaE3hqg==",
   "_location": "/antlr4",
   "_phantomChildren": {},
   "_requested": {
     "type": "version",
     "registry": true,
-    "raw": "antlr4@4.7.2",
+    "raw": "antlr4@4.8.0",
     "name": "antlr4",
     "escapedName": "antlr4",
-    "rawSpec": "4.7.2",
+    "rawSpec": "4.8.0",
     "saveSpec": null,
-    "fetchSpec": "4.7.2"
+    "fetchSpec": "4.8.0"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/antlr4/-/antlr4-4.7.2.tgz",
-  "_shasum": "9d0b5987bb63660de658055ee9149141b4d9b462",
-  "_spec": "antlr4@4.7.2",
-  "_where": "F:\\Code\\larais\\SQE\\test\\SQE.JS.Test",
+  "_resolved": "https://registry.npmjs.org/antlr4/-/antlr4-4.8.0.tgz",
+  "_shasum": "f938ec171be7fc2855cd3a533e87647185b32b6a",
+  "_spec": "antlr4@4.8.0",
+  "_where": "D:\\Documents\\Development\\SQE\\test\\SQE.JS.Test",
   "bugs": {
     "url": "https://github.com/antlr/antlr4/issues"
   },
@@ -38,11 +38,11 @@
     "grammar"
   ],
   "license": "BSD-3-Clause",
-  "main": "src/antlr4/index.js",
+  "main": "index.js",
   "name": "antlr4",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/antlr/antlr4.git"
   },
-  "version": "4.7.2"
+  "version": "4.8.0"
 }
